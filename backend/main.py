@@ -12,16 +12,18 @@ from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Optional, List, Dict, Any
 import uuid
+import pandas as pd
 
 from database import (
     query_projects, query_project_detail, update_alert, query_alerts,
     get_summary_metrics, get_district_risk_aggregation, get_state_risk_aggregation,
-    get_user_by_username, log_system_audit, query_audit_logs
+    get_user_by_username, log_system_audit, query_audit_logs, get_db_connection
 )
 from schemas import (
     RiskSummary, DistrictRiskMetric, StateRiskMetric, AlertItem, AlertStatusUpdate,
     AnomalyCategoryGroup, AnalyticsOverview, LoginRequest, UserProfile
 )
+from ml_engine import supervised_classifier
 
 # In-memory active sessions: token -> user dict
 ACTIVE_SESSIONS: Dict[str, Dict[str, Any]] = {}
@@ -42,6 +44,21 @@ app.add_middleware(
 )
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "static")
+
+
+def ensure_model_trained():
+    """Ensures supervised Logistic Regression classifier is trained and metrics cached."""
+    if not supervised_classifier.is_trained:
+        conn = get_db_connection()
+        df = pd.read_sql_query("SELECT * FROM projects", conn)
+        conn.close()
+        supervised_classifier.train_and_evaluate(df)
+
+
+@app.on_event("startup")
+def on_startup():
+    """Initializes models upon server boot."""
+    ensure_model_trained()
 
 # ------------------------------------------------------------------
 # AUTHENTICATION & SESSION ENDPOINTS
@@ -142,6 +159,21 @@ def get_project_by_id(project_id: str):
     project = query_project_detail(project_id)
     if not project:
         raise HTTPException(status_code=404, detail=f"Project '{project_id}' not found.")
+
+    # Enrich with Supervised ML probability and combined final score
+    ensure_model_trained()
+    conn = get_db_connection()
+    df = pd.read_sql_query("SELECT * FROM projects", conn)
+    conn.close()
+    ml_pred = supervised_classifier.get_project_prediction(project_id, df)
+    project['ml_probability'] = ml_pred['ml_probability']
+    project['predicted_label'] = ml_pred['predicted_label']
+    project['final_score'] = ml_pred['final_score']
+
+    if 'risk_analysis' in project and isinstance(project['risk_analysis'], dict):
+        project['risk_analysis']['ml_probability'] = ml_pred['ml_probability']
+        project['risk_analysis']['final_score'] = ml_pred['final_score']
+
     return project
 
 
@@ -283,6 +315,71 @@ def get_analytics_data():
 def get_audit_logs(limit: int = Query(100, ge=1, le=500)):
     """Retrieve system audit trail for governance accountability."""
     return query_audit_logs(limit=limit)
+
+
+# ------------------------------------------------------------------
+# SUPERVISED ML MODEL APIS
+# ------------------------------------------------------------------
+
+@app.get("/model/metrics")
+@app.get("/api/model/metrics")
+def get_model_metrics():
+    """
+    Returns supervised ML model performance metrics, accuracy, precision,
+    recall, F1-score, and confusion matrix.
+    """
+    ensure_model_trained()
+    return supervised_classifier.metrics
+
+
+@app.get("/model/predictions")
+@app.get("/api/model/predictions")
+def get_model_predictions(
+    limit: int = Query(50, ge=1, le=250),
+    sort_by: str = Query("final_score"),
+    risk_level: Optional[str] = Query(None)
+):
+    """
+    Returns predictions from the supervised Logistic Regression model.
+    Includes ml_probability, predicted_label, and combined final_score.
+    final_score = old_risk_score * 0.6 + (ml_probability * 100) * 0.4
+    """
+    ensure_model_trained()
+    df = supervised_classifier.cached_predictions.copy()
+    if risk_level and risk_level != "ALL":
+        df = df[df['risk_level'] == risk_level]
+
+    if sort_by in df.columns:
+        df = df.sort_values(by=sort_by, ascending=False)
+    else:
+        df = df.sort_values(by="final_score", ascending=False)
+
+    df_subset = df.head(limit)
+    records = []
+    for _, row in df_subset.iterrows():
+        records.append({
+            "project_id": row['project_id'],
+            "title": row['title'],
+            "district": row['district'],
+            "state": row['state'],
+            "sector": row['sector'],
+            "cost_overrun": round(float(row['cost_overrun_pct'] / 100.0), 3),
+            "spending_ratio": round(float(row['expenditure_to_date'] / max(row['sanctioned_amount'], 1.0)), 3),
+            "progress_gap": round(float(row['spending_vs_progress_mismatch_pct'] / 100.0), 3),
+            "delay_days": int(row['delay_days']),
+            "old_risk_score": float(row['composite_risk_score']),
+            "ml_probability": float(row['ml_probability']),
+            "predicted_label": int(row['predicted_label']),
+            "final_score": float(row['final_score']),
+            "risk_level": row['risk_level']
+        })
+    return {
+        "count": len(records),
+        "total_projects": len(df),
+        "model": "Logistic Regression (Supervised)",
+        "formula": "final_score = old_risk_score * 0.6 + (ml_probability * 100) * 0.4",
+        "predictions": records
+    }
 
 
 # ------------------------------------------------------------------

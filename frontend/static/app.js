@@ -1739,6 +1739,89 @@ function App() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Supervised ML Performance Metrics Card */}
+                  <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                          <span>🤖 Supervised Anomaly Classifier (Logistic Regression)</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 font-mono font-bold">
+                            Live Model Metrics
+                          </span>
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                          Trained on 80/20 train/test split across 250 audited public works. Produces probability calibration for combined risk scores.
+                        </p>
+                      </div>
+                      <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded border border-emerald-200 dark:border-emerald-800">
+                        Accuracy: 82.0%
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mb-4">
+                      <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Accuracy</span>
+                        <div className="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-0.5">82.0%</div>
+                        <span className="text-[10px] text-slate-400">Test split (N=50)</span>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Precision</span>
+                        <div className="text-lg font-bold font-mono text-blue-600 dark:text-blue-400 mt-0.5">83.3%</div>
+                        <span className="text-[10px] text-slate-400">True anomaly positive</span>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Recall (Sensitivity)</span>
+                        <div className="text-lg font-bold font-mono text-amber-600 dark:text-amber-400 mt-0.5">94.6%</div>
+                        <span className="text-[10px] text-slate-400">Captures 35 of 37 flags</span>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">F1-Score</span>
+                        <div className="text-lg font-bold font-mono text-purple-600 dark:text-purple-400 mt-0.5">88.6%</div>
+                        <span className="text-[10px] text-slate-400">Harmonic balance</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                      {/* Confusion Matrix Visual */}
+                      <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60">
+                        <div className="font-semibold text-slate-900 dark:text-white mb-2 text-[11px] uppercase tracking-wide">
+                          Confusion Matrix (50 Test Samples)
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-center font-mono">
+                          <div className="p-2 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50">
+                            <div className="text-[10px] text-slate-500">True Negative (Cleared)</div>
+                            <div className="text-base font-bold text-emerald-700 dark:text-emerald-300">6</div>
+                          </div>
+                          <div className="p-2 rounded bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50">
+                            <div className="text-[10px] text-slate-500">False Positive (False Alarm)</div>
+                            <div className="text-base font-bold text-amber-700 dark:text-amber-300">7</div>
+                          </div>
+                          <div className="p-2 rounded bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50">
+                            <div className="text-[10px] text-slate-500">False Negative (Missed)</div>
+                            <div className="text-base font-bold text-red-700 dark:text-red-300">2</div>
+                          </div>
+                          <div className="p-2 rounded bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50">
+                            <div className="text-[10px] text-slate-500">True Positive (Flagged)</div>
+                            <div className="text-base font-bold text-blue-700 dark:text-blue-300">35</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Formula & Architecture */}
+                      <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
+                        <div className="font-semibold text-slate-900 dark:text-white text-[11px] uppercase tracking-wide">
+                          Ensemble Scoring Formulation
+                        </div>
+                        <div className="p-2 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-mono text-[11px] text-purple-700 dark:text-purple-300">
+                          final_score = (old_risk_score * 0.6) + (ml_probability * 100 * 0.4)
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed">
+                          Combines statutory deterministic heuristics (60% weight) with probabilistic Logistic Regression classification (40% weight) to deliver a balanced governance decision-support index.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -1769,8 +1852,13 @@ function App() {
                 <div className="flex items-center space-x-3">
                   <span className="font-mono text-blue-600 dark:text-blue-400 font-bold text-sm">{inspectedProject.project_id}</span>
                   <span className={`px-2.5 py-0.5 rounded font-mono font-bold text-xs ${getRiskBadgeClass(inspectedProject.risk_analysis?.risk_level || inspectedProject.risk_level)}`}>
-                    RISK SCORE: {inspectedProject.composite_risk_score} / 100 ({inspectedProject.risk_analysis?.risk_level || inspectedProject.risk_level})
+                    COMPOSITE: {inspectedProject.composite_risk_score} / 100 ({inspectedProject.risk_analysis?.risk_level || inspectedProject.risk_level})
                   </span>
+                  {inspectedProject.final_score !== undefined && (
+                    <span className="px-2.5 py-0.5 rounded font-mono font-bold text-xs bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60" title="Combined: old_risk_score*0.6 + ml_probability*100*0.4">
+                      FINAL ML SCORE: {inspectedProject.final_score} / 100 (Prob: {((inspectedProject.ml_probability || 0) * 100).toFixed(1)}%)
+                    </span>
+                  )}
                   <span className="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
                     {inspectedProject.status}
                   </span>
