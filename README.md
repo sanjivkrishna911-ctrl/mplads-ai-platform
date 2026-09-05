@@ -1,4 +1,4 @@
-# 🏛️ MPLADS AI Monitor – Secure Governance Intelligence Platform
+#  MPLADS AI Monitor – Secure Governance Intelligence Platform
 
 > **Smart India Hackathon 2026** • **Problem Statement 26102**  
 > *AI-Assisted Anomaly Detection, Expenditure Verification & Governance Decision-Support System for MPLADS*
@@ -11,7 +11,7 @@
 
 ---
 
-## 📌 Executive Summary & Core Philosophy
+##  Executive Summary & Core Philosophy
 
 The **Members of Parliament Local Area Development Scheme (MPLADS)** enables Members of Parliament to recommend developmental works in their constituencies. Monitoring tens of thousands of simultaneous projects across hundreds of districts presents significant oversight challenges:
 
@@ -20,7 +20,7 @@ The **Members of Parliament Local Area Development Scheme (MPLADS)** enables Mem
 - **Chronic Delays & Budget Overruns**: Unsanctioned timeline inflation and compounding cost deviations.
 - **Contractor Monopoly**: Excessive allocation concentration awarded to specific implementing agencies.
 
-### 🛡️ Core Philosophy: Decision Support, Not Automated Accusation
+###  Core Philosophy: Decision Support, Not Automated Accusation
 This system does **NOT** autonomously declare fraud or penalize implementing agencies.  
 Instead, it functions as a **secure decision-support telemetry platform**:
 1. Flags statistical discrepancies and potential anomalies with mathematical transparency.
@@ -31,7 +31,7 @@ Instead, it functions as a **secure decision-support telemetry platform**:
 
 ---
 
-## 🌟 Key Features
+##  Key Features
 
 | Feature | Description |
 |---|---|
@@ -45,7 +45,7 @@ Instead, it functions as a **secure decision-support telemetry platform**:
 
 ---
 
-## 📐 Transparent Scoring Methodology (0–100 Scale)
+##  Transparent Scoring Methodology (0–100 Scale)
 
 The Composite Risk Engine calculates defensible, explainable indicators mapped directly to statutory guidelines:
 
@@ -66,7 +66,7 @@ $$\text{Risk Score} = W_{\text{mismatch}} (25\%) + W_{\text{overrun}} (20\%) + W
 
 ---
 
-## 🔐 Demo Credentials (RBAC)
+##  Demo Credentials (RBAC)
 
 The platform comes pre-seeded with authorized government accounts:
 
@@ -79,7 +79,7 @@ The platform comes pre-seeded with authorized government accounts:
 
 ---
 
-## 🚀 Quick Start & Installation
+##  Quick Start & Installation
 
 ### Prerequisites
 - Python 3.11 or higher
@@ -115,7 +115,7 @@ This automatically initializes the SQLite database, validates dependencies, laun
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```
 mplads-ai-platform/
@@ -142,7 +142,7 @@ mplads-ai-platform/
 
 ---
 
-## 🌐 REST API Reference
+##  REST API Reference
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -161,7 +161,7 @@ mplads-ai-platform/
 
 ---
 
-## 🏆 Hackathon Context
+##  Hackathon Context
 
 - **Event**: Smart India Hackathon (SIH) 2026
 - **Problem Statement**: PS 26102 — AI Anomaly Detection in MPLADS
@@ -169,5 +169,5 @@ mplads-ai-platform/
 
 ---
 
-## 📄 License
+##  License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
