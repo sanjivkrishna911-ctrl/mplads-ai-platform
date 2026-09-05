@@ -1,0 +1,135 @@
+/* Clean Government Portal Styling with Dark & Light Mode Support */
+
+@keyframes pulse-critical {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-critical 2.5s infinite ease-in-out;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Government Portal Card Aesthetics */
+.gov-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.625rem;
+}
+
+.dark .gov-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+.gov-card-hover {
+  transition: all 0.15s ease-in-out;
+}
+.gov-card-hover:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+}
+.dark .gov-card-hover:hover {
+  border-color: #60a5fa;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
+}
+
+/* Standardized Risk Badges (Same clear colors in both modes) */
+.badge-low {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.dark .badge-low {
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.badge-medium {
+  background: rgba(234, 179, 8, 0.12);
+  color: #a16207;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+.dark .badge-medium {
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.35);
+}
+
+.badge-high {
+  background: rgba(249, 115, 22, 0.12);
+  color: #c2410c;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+.dark .badge-high {
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.badge-critical {
+  background: rgba(239, 68, 68, 0.14);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+.dark .badge-critical {
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+
+/* Interactive Map Styling */
+.map-region {
+  transition: all 0.18s ease-in-out;
+  cursor: pointer;
+}
+.map-region:hover {
+  filter: brightness(1.2);
+  stroke: #2563eb;
+  stroke-width: 2px;
+}
+.dark .map-region:hover {
+  stroke: #60a5fa;
+}
+
+/* Table Interactive Row */
+.table-interactive-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+.table-interactive-row:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+}
+.dark .table-interactive-row:hover {
+  background-color: rgba(59, 130, 246, 0.14);
+}
+

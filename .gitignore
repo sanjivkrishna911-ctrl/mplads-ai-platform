@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Environment & Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Database temporary files
+backend/*.db-journal
+backend/*.db-shm
+backend/*.db-wal
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
