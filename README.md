@@ -55,7 +55,7 @@ $$\text{Risk Score} = W_{\text{mismatch}} (25\%) + W_{\text{overrun}} (20\%) + W
 ┌────────────────────────────────────────────────────────┬───────────────┐
 │ Evaluation Factor                                      │ Maximum Score │
 ├────────────────────────────────────────────────────────┼───────────────┤
-│ 1. Spending vs. Physical Progress Mismatch (Gap >20%) │ 25 Points     │
+│ 1. Spending vs. Physical Progress Mismatch (Gap >20%)  │ 25 Points     │
 │ 2. Cost Overrun Deviation past Sanctioned Budget       │ 20 Points     │
 │ 3. Timeline Delay past Contractual Deadline            │ 15 Points     │
 │ 4. Statutory Tender Splitting Bypass (< ₹5 Lakh)       │ 15 Points     │
